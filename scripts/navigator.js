@@ -22,8 +22,7 @@ var _Navigator = (function () {
             nextPageId: "p3",
             dataurl: "p2.htm",
             hasActivity: false,
-
-
+            accessText: "Coffee Rack Cafe",
         },
         "p3": {
             pageId: "p3",
@@ -32,8 +31,7 @@ var _Navigator = (function () {
             dataurl: "p3.htm",
             hinturl: "hintp3.htm",
             hasActivity: true,
-
-
+            accessText: "Windows 10 Desktop",
         },
         "p4": {
             pageId: "p4",
@@ -42,7 +40,7 @@ var _Navigator = (function () {
             dataurl: "p4.htm",
             hinturl: "hintp4.htm",
             hasActivity: true,
-
+            accessText: "windows desktop todo list open. Things to do today Answer email to friends, pay credit card - online, check email for confirmation of purchase made earlier today, answer email about current budget issues with corporate accountant(remember to attach the list of current purchases including invoice numbers), search for a hotel for the conference in denver next month check checking account balance - online, transfer money from savings to checking (if needed) - online",
         },
         "p5": {
             pageId: "p5",
@@ -51,7 +49,7 @@ var _Navigator = (function () {
             dataurl: "p5.htm",
             hinturl: "hintp5.htm",
             hasActivity: true,
-
+            accessText: "Windows 10 Desktop with Wireless network setting window open",
         },
         "p6": {
             pageId: "p6",
@@ -60,7 +58,7 @@ var _Navigator = (function () {
             dataurl: "p6.htm",
             hinturl: "hintp6.htm",
             hasActivity: true,
-
+            accessText: "Windows 10 Desktop with Wireless network setting window open",
         },
         "p7": {
             pageId: "p7",
@@ -69,7 +67,7 @@ var _Navigator = (function () {
             dataurl: "p7.htm",
             hinturl: "hintp7.htm",
             hasActivity: true,
-
+            accessText: "Windows 10 Desktop with Wireless network setting window open",
         },
         "p8": {
             pageId: "p8",
@@ -78,7 +76,7 @@ var _Navigator = (function () {
             dataurl: "p8.htm",
             hinturl: "hintp8.htm",
             hasActivity: true,
-
+            accessText: "Windows 10 Desktop with Wireless network setting window open",
         },
         "p9": {
             pageId: "p9",
@@ -87,8 +85,7 @@ var _Navigator = (function () {
             dataurl: "p9.htm",
             hinturl: "hintp9.htm",
             hasActivity: true,
-            //isLastPage:true,
-
+            accessText: "Windows 10 Desktop with Things to Do Today note open",
         },
         "p10":{
             pageId: "p10",
@@ -115,8 +112,12 @@ var _Navigator = (function () {
             $("#header-title").addClass("startpage");
         }
         _ModuleCommon.OnPageLoad();
-
-
+        if ((/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent))) {
+            $('#footer-navigation').css('display', 'table');
+        }
+        if (_currentPageObject.accessText != undefined) {
+            $(".activityimg").attr("alt", _currentPageObject.accessText);
+        }
     }
     return {
         Get: function () {
@@ -191,18 +192,13 @@ var _Navigator = (function () {
                             $(".submitdata").k_disable();
                         }
                         
-                        if(_currentPageObject.pageId == "p2")
-                            setReader("titleheader");
+                        if(_currentPageId == "p2")
+                        {
+                            $("#titleheader").focus();
+                        }
                         else
                         {
-                            //if($("body").hasClass("no-focus"))
-                            {
-                                setReader("titleheader");
-                            }
-                            // else
-                            // {
-                            //     setReader("progressdiv");
-                            // }
+                            $("#progressdiv").focus();
                         }
                         $("#hintdiv").show();
                         if(_currentPageObject.hideHint !=undefined && _currentPageObject.hideHint)

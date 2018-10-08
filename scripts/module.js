@@ -103,7 +103,6 @@ var _ModuleCommon = (function () {
 
         },
         InstructorReviewModeForCheckbox: function () {
-            debugger;
             $(".EmbededElement").hide();
             var reviewData = this.GetPageReviewData();
             var pageDetailData = this.GetPageDetailData();
@@ -597,7 +596,6 @@ var _ModuleCommon = (function () {
             $('html,body').animate({ scrollTop: document.body.scrollHeigh }, 500, function () { });
         },
         checkboxcheckAns: function () {
-            debugger;
             var checkboxVal = $("input[type='checkbox']:checked").map(function () {
                 return $(this).attr("id");
             }).get();
@@ -610,6 +608,9 @@ var _ModuleCommon = (function () {
                         isVRequired = false;
                         break;
                     }
+                }
+                if (checkboxVal.length > 3){
+                    isVRequired = false;
                 }
 
                 var found = false;
@@ -667,7 +668,6 @@ var _ModuleCommon = (function () {
 
         },
         InputEnter: function (inputtext) {
-            debugger;
             if (_Navigator.IsAnswered())
                 return;
             if ($.trim(inputtext.val()) != "") {
@@ -743,17 +743,20 @@ var _ModuleCommon = (function () {
             $("input[type='checkbox']:checked").each(function () {
                 var iscorrect = $(this).attr("iscorrect");
                 if (iscorrect == undefined) iscorrect = "Incorrect";
+                var arialabel = $("#"+$(this).attr("id")+"_span").html();
                 if (iscorrect == "Correct") {
-                    $(this).before("<div class='cchkitem'></div>")
+                    $(this).before("<div class='cchkitem' aria-label = 'check box checked correct option selected "+arialabel+"'></div>");
+                    $("label[for='"+$(this).attr("id")+"']").attr("aria-hidden","true");
                 }
                 else {
-                    $(this).before("<div class='icchkitem'></div>")
+                    $(this).before("<div class='icchkitem' aria-label='check box checked incorrect option selected "+arialabel+"' ></div>");
+                    $("label[for='"+$(this).attr("id")+"']").attr("aria-hidden","true");
                 }
             })
         
             this.SetCorrectIncorrectItemStyle(checklistid)
-            $(".cchkitem").next().hide();
-            $(".icchkitem").next().hide();
+            $(".cchkitem").next().hide().attr("aria-hidden","true");
+            $(".icchkitem").next().hide().attr("aria-hidden","true");
         },
         SetCorrectIncorrectItemStyle: function(checklistid) {
             var selector = ".k-element-checklist";
@@ -776,7 +779,6 @@ var _ModuleCommon = (function () {
     }
 })();
 function AppendFooter() {
-    debugger;
     if ($(".levelfooterdiv").length == 0) {
         var str = '<div class="levelfooterdiv"><div class="navBtn prev" onClick="GoToPrev()" role="button" tabindex = 195 aria-label="Previous"><a href="#"></a></div><div style="display: inline-block;width: 2px;"></div><div class="boxleveldropdown" style="width: 150px;"  role="button" tabindex = 196 aria-label="Scorecard"><span class="leftarrow"></span><ul class="levelmenu"><li class="uparrow" style = "width: 100px; margin-left: -8px;"><span class="menutitle" >Scorecard</span><div class="levelsubMenu" tabindex = 197 role="text">Total Score - <br>Activity Score - </div><a class="menuArrow"></a></div><div style="display: inline-block;width: 2px;"></div><div class="navBtn next" onClick="GoToNext()" role="button" tabindex = 198 aria-label="Next"><a href="#"></a></div></div>';
         $("#wrapper").append($(str));
@@ -802,7 +804,6 @@ var mTreeObj = {
         _Navigator.LoadPage(pageid);
     },
     GoToPrev: function () {
-        debugger;
         try {
             if ($(".navBtn.prev").css("pointer-events") == "none") {
                 return;
@@ -828,7 +829,6 @@ var mTreeObj = {
     },
     GoToNext: function () {
         try {
-            debugger;
             if ($(".navBtn.next").css("pointer-events") == "none") {
                 return;
             } 

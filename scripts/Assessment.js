@@ -66,7 +66,6 @@ function shuffle(array) {
 }
 var isFirstQAnswered = false
 function showQuestion(){
-	debugger;
 	//addCSS("styles/questionPlaceholder.css");
 	$(".question-band fieldset").empty();
 	$(".question-band fieldset").append("<legend aria-label='Options'></legend>")
@@ -167,7 +166,6 @@ function showUserReviewMode(){
 }
 
 function showSummary(){
-	debugger;
 	var score = 0;
 	for(var b=0; b < gRecordData.Questions.length; b++){
 		questionObj = $("#Question").clone();
