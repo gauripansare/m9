@@ -1,4 +1,4 @@
-﻿var isscorm = true;
+﻿var isscorm = false;
 var isrevel = false;
 //This api will contain navigation logic and page load.
 //It will also handle the question navigation if the page is having multiple questions.
@@ -197,7 +197,7 @@ var _Navigator = (function () {
                                     $("#titleheader").focus();
                                 }
                                 else {
-                                    if (_currentPageId != "p9") {
+                                    if (_currentPageId != "p10") {
                                         $("#progressdiv").focus();
                                     }
                                     else {
@@ -211,7 +211,7 @@ var _Navigator = (function () {
                             });
                         }
 
-                        if (_currentPageId == "p9")//  change to assessment id
+                        if (_currentPageId == "p10")//  change to assessment id
                         {
                             _Assessment.ShowQuestion();
                         }
@@ -256,7 +256,7 @@ var _Navigator = (function () {
             if (_Navigator.IsRevel()) {
                 LifeCycleEvents.OnInteraction("Previous link click.")
             }
-            if (_currentPageObject.pageId == "p9" && typeof (currentQuestionIndex) != 'undefined' && currentQuestionIndex > 0) {
+            if (_currentPageObject.pageId == "p10" && typeof (currentQuestionIndex) != 'undefined' && currentQuestionIndex > 0) {
                 $("#ReviewIns").hide();
                 $(".intro-content-question").show();
                 $("#Questioninfo").show();
@@ -276,7 +276,7 @@ var _Navigator = (function () {
             }
             $("#linkprevious").k_enable();
             
-            if (_currentPageObject.pageId == "p9") {
+            if (_currentPageObject.pageId == "p10") {
 
                 if (typeof (currentQuestionIndex) != 'undefined' && typeof (gRecordData.Questions) != 'undefined' && (currentQuestionIndex + 1) < gRecordData.Questions.length) {
                     currentQuestionIndex = currentQuestionIndex + 1

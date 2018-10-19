@@ -156,7 +156,7 @@ var _ModuleCommon = (function () {
                         if (pageDetailData.EmbedSettings.validatearray.indexOf(tEntry) >= 0) {
                             if (reviewData.isCorrect && i == 0) {
                                 $(".textentryreview1").html("<div class='OpenSansFont greenspan' style='font-weight:bold;font-size: 13px; ' ><span aria-hidden='true'>" + reviewData.textEntry[i] + "</span></div>")
-                                $(".textentryaccessibility").text("correct value Entered " + reviewData.textEntry[i]);
+                                $(".textentryaccessibility").text("Correct password" + reviewData.textEntry[i]);
                             }
                             else {
                                 $(".textentryreview2").html("<div class='OpenSansFont greenspan'  style='font-weight:bold;font-size: 13px;padding-left:5px; ' ><span aria-hidden='true'>" + reviewData.textEntry[i] + "</span></div>");
@@ -169,7 +169,7 @@ var _ModuleCommon = (function () {
                     }
                     if (i == 1) {
                       
-                        $(".textentryaccessibility").text("correct value Entered " + reviewData.textEntry[i] +" and incorrect value entered "+reviewData.textEntry[i-1]);
+                        $(".textentryaccessibility").text("Incorrect password entered "+reviewData.textEntry[i-1]+" correct password is " + reviewData.textEntry[i] );
                         
                     }
                 }
@@ -690,7 +690,10 @@ var _ModuleCommon = (function () {
                     $("#div_feedback").show();
                     $("#div_feedback").css("display", "inline-block");
                     $("#div_feedback .div_fdkcontent").load(fdbkUrl, function () {
-                         $('html,body').animate({ scrollTop: document.body.scrollHeight }, 1000, function () { });
+                        $("#div_feedback p:first").attr("tabindex", "-1")
+                        $('html,body').animate({ scrollTop: document.body.scrollHeight }, 1000, function () {
+                            $("#div_feedback p:first").focus();
+                        });
                     });
                     $(".submitdata").k_disable();
                     $("input[type='checkbox']").k_disable();

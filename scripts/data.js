@@ -49,7 +49,7 @@ var _PData = {
                   HotspotId: 1,
                   width: "3.015075376884422%",
                   height: "4.690117252931323%",
-                  top: "95.14237855946399%",
+                  top: "94%",
                   left: "85.11306532663316%",
                   widthPX: "24px",
                   heightPX: "28px",
