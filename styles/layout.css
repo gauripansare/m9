@@ -88,8 +88,19 @@ button:active, textarea:active, select:active,
     outline: none
 }
 
+<<<<<<< HEAD
 #progressdiv:focus,#titleheader:focus,#header1:focus,#div_feedback p:focus,#Questioninfo:focus,#summaryheading:focus,.pageheading:focus,p:focus{ /*for accessibility*/
     outline: none
+=======
+.no-focus .questioninnerwrapper input[type="radio"]:focus + .inputcircle::after {
+outline: none
+}
+#progressdiv:focus,#titleheader:focus,#header1:focus{ /*for accessibility*/
+outline: none
+}
+#appmenu *:focus, #appmenu *:active {
+    outline: #ff8c00 solid 2px;
+>>>>>>> cd6afec5526d9a48d2e3a26b68953e8538556a1c
 }
 
 .mxwidth {
