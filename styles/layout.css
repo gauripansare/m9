@@ -81,6 +81,12 @@ div, p, span, input {
             outline: #ff8c00 solid 2px;
         }
 
+.no-focus .questioninnerwrapper input[type="radio"]:focus + .inputcircle::after {
+outline: none
+}
+#progressdiv:focus,#titleheader:focus,#header1:focus{ /*for accessibility*/
+outline: none
+}
 #appmenu *:focus, #appmenu *:active {
     outline: #ff8c00 solid 2px;
 }
