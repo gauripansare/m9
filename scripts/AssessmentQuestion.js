@@ -10,6 +10,7 @@ gRecordData = {
     OptionSequence: "LowerAlphabets", // this can be used later if different display style is required
     RandomizeQuestions: true,
     RandomizeOptions: true,
+    Score:0,
     Questions: [
                     {
                         QuestionId: "1",
