@@ -185,7 +185,7 @@ $(document).on("click", ".assessmentSubmit", function (event) {
 });
 $(document).on('click', ".inputcircle", function (event) {
    
-    $(this).next(".inpputtext").trigger( "click" );
+    $(this).closest("div").find(".inpputtext").trigger( "click" );
 });
 
 window.onload = function () {

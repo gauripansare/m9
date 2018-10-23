@@ -121,6 +121,10 @@ var _Navigator = (function () {
         if (_currentPageObject.accessText != undefined) {
             $(".activityimg").attr("alt", _currentPageObject.accessText);
         }
+        if (presentermode) {
+            _ModuleCommon.PresenterMode();
+        }
+
     }
     return {
         Get: function () {
@@ -130,6 +134,7 @@ var _Navigator = (function () {
             this.LoadPage("p1");
         },
         LoadPage: function (pageId, jsonObj) {
+            $(".hintcontainer").hide()
             if (_Navigator.IsRevel() && _currentPageId !=undefined && _currentPageId !="") {
                LifeCycleEvents.OnUnloadFromPlayer()
             }
@@ -204,11 +209,11 @@ var _Navigator = (function () {
                                       $("#Questioninfo").focus();
                                     }
                                 }
-                                if (presentermode) {
-                                    _ModuleCommon.PresenterMode();
-                                }
-
+                               
                             });
+                        }
+                        else{
+                            OnPageLoad();
                         }
 
                         if (_currentPageId == "p10")//  change to assessment id
@@ -220,9 +225,15 @@ var _Navigator = (function () {
                         if (_currentPageObject.hideHint != undefined && _currentPageObject.hideHint) {
                             $("#hintdiv").hide();
                         }
-
-                        $(".hintcontent").load("pagedata/hintdata/" + _currentPageObject.hinturl, function () { });
-
+                        if(_currentPageObject.hinturl == undefined)
+                        {
+                            $(".hintlink").k_disable();
+                        }
+                        else
+                        {
+                            $(".hintlink").k_enable();
+                            $(".hintcontent").load("pagedata/hintdata/" + _currentPageObject.hinturl, function () { });
+                        }
                         if ((/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent))) {
                             $('#footer-navigation').css('display', 'table');
                         }
