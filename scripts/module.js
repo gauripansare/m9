@@ -533,7 +533,7 @@ var _ModuleCommon = (function () {
             $("#div_feedback").css("display", "inline-block");
             $("#div_feedback .div_fdkcontent").load(fdbkUrl, function () {
                 // this.SetFeedbackTop()
-                $('html,body').animate({ scrollTop: document.body.scrollHeight }, 1000, function () { });
+                $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () { });
             });
             $("input").k_disable();
             this.EnableNext();
@@ -559,7 +559,9 @@ var _ModuleCommon = (function () {
             $("#div_feedback").css("display", "inline-block");
             $("#div_feedback .div_fdkcontent").load(fdbkUrl, function () {
                 // this.SetFeedbackTop()
-                $('html,body').animate({ scrollTop: document.body.scrollHeight }, 1000, function () { });
+                $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () { 
+                    $("#div_feedback").focus();
+                });
             });
             if(isCorrect)
             {
@@ -658,7 +660,7 @@ var _ModuleCommon = (function () {
                     $("#div_feedback").show();
                     $("#div_feedback").css("display", "inline-block");
                     $("#div_feedback .div_fdkcontent").load(fdbkUrl, function () {
-                         $('html,body').animate({ scrollTop: document.body.scrollHeight }, 1000, function () { });
+                         $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () { });
                     });
                     $(".submitdata").k_disable();
                     $("input[type='checkbox']").k_disable();
