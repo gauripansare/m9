@@ -77,27 +77,31 @@ div, p, span, input {
         min-width: 100px;
     }
 
-        a:focus, input:focus, button:focus, textarea:focus, select:focus, a:active, input:active, button:active, textarea:active, select:active {
-            outline: #ff8c00 solid 2px;
-        }
+a:focus, input:focus, button:focus, textarea:focus, select:focus, a:active, input:active, 
+button:active, textarea:active, select:active,
+ .questioninnerwrapper input[type="radio"]:focus + .inputcircle::after,
+ #Summary input[type="radio"]:focus + .inputcircle::after {
+    outline: #ff8c00 auto 3px;
+}
 
+.no-focus .questioninnerwrapper input[type="radio"]:focus + .inputcircle::after {
+    outline: none
+}
+#progressdiv:focus,#titleheader:focus,#header1:focus,#div_feedback p:focus,#Questioninfo:focus,#summaryheading:focus,.pageheading:focus,p:focus{ /*for accessibility*/
+    outline: none
+}
 .no-focus .questioninnerwrapper input[type="radio"]:focus + .inputcircle::after {
 outline: none
 }
 #progressdiv:focus,#titleheader:focus,#header1:focus{ /*for accessibility*/
 outline: none
 }
-#appmenu *:focus, #appmenu *:active {
-    outline: #ff8c00 solid 2px;
-}
 
 .mxwidth {
     max-width: 990px;
 }
 
-.headmargin {
-    /* margin-top: 144px; */
-}
+
 
 #wrapper {
     width: 100%;

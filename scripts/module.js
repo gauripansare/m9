@@ -1,4 +1,11 @@
-﻿jQuery.fn.extend({
+﻿
+var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+var ipad = !!navigator.platform && /iPad|iPod/.test(navigator.platform);
+var isIE11version = !!navigator.userAgent.match(/Trident.*rv\:11\./);
+var isIEEdge = /Edge/.test(navigator.userAgent);
+var isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1;
+var isFirefox = /Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent);
+jQuery.fn.extend({
     k_enable: function () {
         return this.removeClass('disabled').attr("aria-disabled", "false").removeAttr("disabled");
     },
@@ -28,6 +35,12 @@ var _ModuleCommon = (function () {
                 }
             }
 
+        },
+        GetReviewData: function () {
+            return reviewData;
+        },
+        SetReviewData: function (rData) {
+            reviewData = rData;
         },
         GetPageDetailData: function () {
             var currentPageData = _Navigator.GetCurrentPage();
@@ -142,18 +155,23 @@ var _ModuleCommon = (function () {
                         var tEntry = reviewData.textEntry[i].trim();
                         if (pageDetailData.EmbedSettings.validatearray.indexOf(tEntry) >= 0) {
                             if (reviewData.isCorrect && i == 0) {
-                                $(".textentryreview1").html("<span class='OpenSansFont greenspan' style='font-weight:bold;font-size: 13px; '>" + reviewData.textEntry[i] + "</span>")
+                                $(".textentryreview1").html("<div class='OpenSansFont greenspan' style='font-weight:bold;font-size: 13px; ' ><span aria-hidden='true'>" + reviewData.textEntry[i] + "</span></div>")
+                                $(".textentryaccessibility").text("Correct password" + reviewData.textEntry[i]);
                             }
                             else {
-                                $(".textentryreview2").html("<span class='OpenSansFont greenspan'  style='font-weight:bold;font-size: 13px;padding-left:5px; '>" + reviewData.textEntry[i] + "</span>");
+                                $(".textentryreview2").html("<div class='OpenSansFont greenspan'  style='font-weight:bold;font-size: 13px;padding-left:5px; ' ><span aria-hidden='true'>" + reviewData.textEntry[i] + "</span></div>");
                                 $(".textentryreview2").show();
                             }
                         }
                         else {
-                            $(".textentryreview1").html("<span class='OpenSansFont redspan'  style='font-weight:bold;font-size: 13px; '>" + reviewData.textEntry[i] + "</span>")
+                            $(".textentryreview1").html("<div class='OpenSansFont redspan'  style='font-weight:bold;font-size: 13px; ' ><span aria-hidden='true'>" + reviewData.textEntry[i] + "</span></div>")
                         }
                     }
-
+                    if (i == 1) {
+                      
+                        $(".textentryaccessibility").text("Incorrect password entered "+reviewData.textEntry[i-1]+" correct password is " + reviewData.textEntry[i] );
+                        
+                    }
                 }
                 $(".textentryreview1").show();
             }
@@ -473,6 +491,9 @@ var _ModuleCommon = (function () {
 
         },
         HotspotClick: function (_hotspot, event) {
+            if (_Navigator.IsRevel()) {
+                LifeCycleEvents.OnInteraction("Hotspot click.")
+            }
             if (_Navigator.IsAnswered())
                 return;
             var action = _hotspot.attr("action")
@@ -516,6 +537,7 @@ var _ModuleCommon = (function () {
                 default:
                     break;
             }
+            _Navigator.GetBookmarkData();
         },
         SetFeedbackTop: function () {
             var ptop = Number($("#div_feedback").position().top);
@@ -527,18 +549,27 @@ var _ModuleCommon = (function () {
         },
         InputFeedback: function () {
 
+            if (_Navigator.IsRevel()) {
+                LifeCycleEvents.OnFeedback()
+            }
             var pageData = this.GetPageDetailData();
             var fdbkUrl = _Settings.dataRoot + "feedbackdata/" + pageData.EmbedSettings.feedbackurl;
             $("#div_feedback").show();
             $("#div_feedback").css("display", "inline-block");
             $("#div_feedback .div_fdkcontent").load(fdbkUrl, function () {
-                // this.SetFeedbackTop()
-                $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () { });
+                // this.SetFeedbackTop()   
+                $("#div_feedback p:first").attr("tabindex", "-1")
+                $('html,body').animate({ scrollTop: document.body.scrollHeight }, 1000, function () {
+                    $("#div_feedback p:first").focus();
+                });
             });
             $("input").k_disable();
             this.EnableNext();
         },
         HotspotFeedback: function (_hotspot,isCorrect) {
+            if (_Navigator.IsRevel()) {
+                LifeCycleEvents.OnFeedback()
+            }
             var pageData = this.GetPageDetailData();
             var url = "";
             if (pageData.ImageHotSpots != undefined) {
@@ -558,15 +589,14 @@ var _ModuleCommon = (function () {
             $("#div_feedback").show();
             $("#div_feedback").css("display", "inline-block");
             $("#div_feedback .div_fdkcontent").load(fdbkUrl, function () {
-                // this.SetFeedbackTop()
-                $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () { 
-                    $("#div_feedback").focus();
+                // this.SetFeedbackTop()   
+                $("#div_feedback p:first").attr("tabindex", "-1")
+                $('html,body').animate({ scrollTop: document.body.scrollHeight }, 1000, function () {
+                    $("#div_feedback p:first").focus();
                 });
             });
-            if(isCorrect)
-            {
-                this.EnableNext();
-            }
+            $(".divHotSpot").k_disable();
+            this.EnableNext();
         },
         HotspotNext: function () {
             _Navigator.Next();
@@ -660,7 +690,10 @@ var _ModuleCommon = (function () {
                     $("#div_feedback").show();
                     $("#div_feedback").css("display", "inline-block");
                     $("#div_feedback .div_fdkcontent").load(fdbkUrl, function () {
-                         $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () { });
+                        $("#div_feedback p:first").attr("tabindex", "-1")
+                        $('html,body').animate({ scrollTop: document.body.scrollHeight }, 1000, function () {
+                            $("#div_feedback p:first").focus();
+                        });
                     });
                     $(".submitdata").k_disable();
                     $("input[type='checkbox']").k_disable();
@@ -672,6 +705,9 @@ var _ModuleCommon = (function () {
         InputEnter: function (inputtext) {
             if (_Navigator.IsAnswered())
                 return;
+            if (_Navigator.IsRevel()) {
+                LifeCycleEvents.OnInteraction("Input Enter click.")
+            }
             if ($.trim(inputtext.val()) != "") {
                 var pageData = this.GetPageDetailData();
                 var vtextarr = pageData.EmbedSettings.validatearray;
@@ -739,6 +775,7 @@ var _ModuleCommon = (function () {
                 $(".divHotSpot").removeClass("hotspotclicked");
                 $(".divHotSpot").k_enable();
             }
+            _Navigator.GetBookmarkData();
         },
          ShowCorrectIncorrectCheckItems: function(checklistid) {
            
@@ -921,11 +958,7 @@ $.knowdlCountDown = function (options) {
 }
 
 $(document).ready(function () {
-    _Navigator.Start();
-    
-    //if (_Settings.enableCache) {
-    //    _Caching.InitAssetsCaching();
-    //    _Caching.InitPageCaching();
-    //}
+    debugger;
+    _Navigator.Initialize();
     $('body').attr({ "id": "thebody", "onmousedown": "document.getElementById('thebody').classList.add('no-focus');", "onkeydown": "document.getElementById('thebody').classList.remove('no-focus');" })
 });
