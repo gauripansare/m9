@@ -170,15 +170,7 @@
     margin: 0 10%;
 }
 
-.greenspan {
-    color: #01662C;
-    font-weight: bold;
-}
 
-.redspan {
-    color: #B22222;
-    font-weight: bold;
-}
 .start-btn {
     width: 100%;
     display: flex;
@@ -381,6 +373,9 @@
     display: block;
     margin: 5px 0;
 }
+#Summary .inpputtext{
+    margin: 0px;
+    }
    .chkbox{
        margin-left: -18px;
    }

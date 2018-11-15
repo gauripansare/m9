@@ -12,6 +12,8 @@ jQuery.fn.extend({
     k_disable: function () {
         this.addClass('disabled').attr("aria-disabled", "true").attr("disabled", "disabled");
         if (isIE11version) {
+            if ($(this).attr("type") != undefined && $(this).attr("type") == "radio")
+                return;
             $(this).removeAttr("disabled")
         }
         return;
@@ -68,15 +70,15 @@ var _ModuleCommon = (function () {
                         }
                     }
                 }
-                if(fdkurl != undefined){
-                fdkurl = _Settings.dataRoot + "feedbackdata/" + fdkurl;
-                $("#div_feedback").show();
-                $("#div_feedback").css("display", "inline-block");
-                $("#div_feedback .div_fdkcontent").load(fdkurl, function () {
-                    //this.SetFeedbackTop()
-                    //$('html,body').animate({ scrollTop: 0 }, 0, function () { });
-                });
-            }
+                if (fdkurl != undefined) {
+                    fdkurl = _Settings.dataRoot + "feedbackdata/" + fdkurl;
+                    $("#div_feedback").show();
+                    $("#div_feedback").css("display", "inline-block");
+                    $("#div_feedback .div_fdkcontent").load(fdkurl, function () {
+                        //this.SetFeedbackTop()
+                        //$('html,body').animate({ scrollTop: 0 }, 0, function () { });
+                    });
+                }
             }
         },
         DisplayInstructorReviewMode: function () {
@@ -374,7 +376,7 @@ var _ModuleCommon = (function () {
             if (_Navigator.IsPresenterMode()) {
                 $(".startbtn").k_disable();
                 $("#linknext").k_enable();
-                this.PresenterMode();                
+                this.PresenterMode();
             }
         },
         PresenterMode: function () {
@@ -387,7 +389,7 @@ var _ModuleCommon = (function () {
                     $("input[type='text']").val(pageData.answerset[0]);
                     $("input[type='text']").k_disable();
                 }
-                else if(pageData.ImageHotSpots != undefined){
+                else if (pageData.ImageHotSpots != undefined) {
                     var posObj = pageData.ImageHotSpots.Hotspots[0];
                     var _div = "<div class='reviewDiv Correct' style='z-index:5;width:39px;height:39px;position:absolute;left:" + posObj.left + ";top:" + posObj.top + ";'><img src='assets/images/review-correct.png' style='width:39px;height:35px;' /></div>";
                     if (currentPageData.pageId == "p3") {
@@ -405,7 +407,7 @@ var _ModuleCommon = (function () {
             }
             //}
             $("#linknext").k_enable();
-            if(currentPageData.pageId != "p10"){
+            if (currentPageData.pageId != "p10") {
                 _Navigator.SetPageStatus(true);
             }
             _Navigator.UpdateProgressBar();
@@ -603,9 +605,11 @@ var _ModuleCommon = (function () {
                     $("#div_feedback p:first").attr("role", "text")
                 }
                 $("#div_feedback p:first").attr("tabindex", "-1")
-                $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () {
-                    $("#div_feedback p:first").focus();
-                });
+                // $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () {
+                //     $("#div_feedback p:first").focus();
+                // });
+                window.scrollTo(0, document.body.scrollHeight)
+                $("#div_feedback p:first").focus();
             });
             $("input").k_disable();
             this.EnableNext();
@@ -638,13 +642,11 @@ var _ModuleCommon = (function () {
                     $("#div_feedback p:first").attr("role", "text")
                 }
                 $("#div_feedback p:first").attr("tabindex", "-1")
-                 $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () {
-                     $("#div_feedback p:first").focus();
-                 });
-                //window.scrollTo(0,document.body.scrollHeight)
-                //setTimeout(function(){
-                //$("#div_feedback p:first").show().focus();
-                //},100)
+                // $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () {
+                //     $("#div_feedback p:first").focus();
+                // });
+                window.scrollTo(0, document.body.scrollHeight)
+                $("#div_feedback p:first").focus();
 
             });
             $(".divHotSpot").k_disable();
@@ -678,9 +680,11 @@ var _ModuleCommon = (function () {
             $("#div_feedback .div_fdkcontent").html("");
             $("#div_feedback").hide();
             $(".pageheading").attr("tabindex", "-1")
-            $('html,body').animate({ scrollTop: document.body.scrollHeigh }, 500, function () {
-                $(".pageheading").focus()
-            });
+            // $('html,body').animate({ scrollTop: document.body.scrollHeigh }, 500, function () {
+            //     $(".pageheading").focus()
+            // });
+            window.scrollTo(0, document.body.scrollHeight)
+            $(".pageheading").focus();
         },
         checkboxcheckAns: function () {
             var checkboxVal = $("input[type='checkbox']:checked").map(function () {
@@ -749,9 +753,11 @@ var _ModuleCommon = (function () {
                             $("#div_feedback p:first").attr("role", "text")
                         }
                         $("#div_feedback p:first").attr("tabindex", "-1")
-                        $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () {
-                            $("#div_feedback p:first").focus();
-                        });
+                        // $('html,body').animate({ scrollTop: document.body.scrollHeight }, animeTime, function () {
+                        //     $("#div_feedback p:first").focus();
+                        // });
+                        window.scrollTo(0, document.body.scrollHeight)
+                        $("#div_feedback p:first").focus();
                     });
                     $(".submitdata").k_disable();
                     $("input[type='checkbox']").k_disable();

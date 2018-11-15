@@ -4,15 +4,8 @@ var numOfQuestion = 4
 var numOfPagesInModule = 1 + numOfQuestion
 var currentQuestionIndex = 0;
 var introHTML = "";
-//	- Progress logic = (visitedpages / total pages ) * 100 %
-//  	"visitedNumberOfPages"  -- increase this by one on every page/question -- on next click?
 var visitedNumberOfPages = 0;
-
-
 var gRecordData = null;
-
-
-//	- Score -- number of correct attempted questions divided by total number of questions
 var AssessmentScore = 0;
 var isFirstQAnswered = false
 var _Assessment = (function () {
@@ -22,7 +15,7 @@ var _Assessment = (function () {
 			window.document.title = gRecordData.RecordTitle
 			$("#header-title").find("h1").text(gRecordData.RecordTitle)
 
-			//$(".main-content").load(gRecordData.LandingPageURL)
+
 			// init global var
 			AssessmentScore = gRecordData.AssessmentScore;
 			visitedNumberOfPages = gRecordData.VisitedNumberOfPages
@@ -181,7 +174,7 @@ var _Assessment = (function () {
 			$("input[type='radio']").k_disable();
 
 			if (isIE11version) {
-				$("input[type='radio']").removeAttr("aria-disabled");
+				//$("input[type='radio']").removeAttr("aria-disabled");
 				this.SetCustomarialabelforRadio();
 				//$("input[type='radio']").removeAttr("disabled")
 			}
@@ -262,13 +255,13 @@ var _Assessment = (function () {
 				$("#Summary").find("input[type='radio']").prop("readonly", "readonly");
 				$("#Summary").find("input[type='radio']").k_disable();
 				if (isIE11version) {
-					$("#Summary").find("input[type='radio']").removeAttr("aria-disabled");
-					//$("#Summary").find("input[type='radio']").removeAttr("disabled")
+				//	$("#Summary").find("input[type='radio']").removeAttr("aria-disabled");
+					
 				}
 
 			}
 			
-			$("#Summary input[type='radio']").each(function(){$(this).unwrap()});
+			//$("#Summary input[type='radio']").each(function(){$(this).unwrap()});
 			if (isIE11version) {
 				this.SetCustomarialabelforRadio();
 
@@ -276,16 +269,18 @@ var _Assessment = (function () {
 			if (gRecordData.Status == "Started") {
 				gRecordData.Status = "Completed";
 				gRecordData.Score = score;
+				var perscore = gRecordData.Score / parseInt(gRecordData.AssessmentScore) * 100;	
+				$("#ScoreSummary").text("Score: " + perscore + "%");
 				this.SetScore(perscore);
 			}
-			else if (_Navigator.IsPresenterMode()) {
+			if(_Navigator.IsPresenterMode())
+			{
+				$("#ScoreSummary").text("Score: 100%");
 				gRecordData.Status = "Completed";
+				
 			}
-			_Navigator.UpdateProgressBar();
-			var perscore = gRecordData.Score / parseInt(gRecordData.AssessmentScore) * 100;
 			
-			$("#ScoreSummary").text("Score: " + perscore + "%");
-
+			_Navigator.UpdateProgressBar();
 			$("#progressdiv").focus();
 		},
 		SetScore: function (perscore) {
@@ -316,6 +311,7 @@ var _Assessment = (function () {
 				$(this).prev(".iscorrect").before(radioalabel);
 				$(this).attr("aria-hidden", "true");
 				$(this).next().attr("aria-hidden", "true");
+				$(this).attr("disabled","true")
 
 			})
 		},

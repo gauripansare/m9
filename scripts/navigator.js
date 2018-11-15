@@ -6,9 +6,7 @@ var _Navigator = (function () {
     var _currentPageObject = {};
     var progressLevels = [14];
     var totalsimscore = 18;
-    var submitCounter = 0;
     //var presentermode = false;
-    var submitCounter = 0;
     var bookmarkpageid = "";
     var quizpageid = "p10";
     var _NData = {
@@ -106,7 +104,8 @@ var _Navigator = (function () {
     var _StateData = {}
 
     function OnPageLoad() {
-
+        $(".hintcontainer").hide()
+        $(".header-content-dock").css({"visibility":"hidden"});
         $(".hintcontainer").hide()
         $(".hintlink").removeClass("expanded");
         $(".hintlink").attr("aria-expanded", "false")
@@ -161,11 +160,15 @@ var _Navigator = (function () {
                 this.SetPageStatus(true);
             }
             
+            $('html,body').css({ scrollTop: 0 })
             if (_currentPageObject.isStartPage != undefined && _currentPageObject.isStartPage) {
                 $("#linkprevious").k_disable();
                 $("#linknext").k_enable();
                 $("footer").hide();
                 $("#header-progress").hide();
+                if (this.IsPresenterMode())
+                    _ModuleCommon.AppendFooter();
+
             }
             if (_currentPageObject.hasActivity != undefined && _currentPageObject.hasActivity && !this.IsAnswered()) {
                 $("#linknext").k_disable();
@@ -350,7 +353,7 @@ var _Navigator = (function () {
         UpdateProgressBar: function () {
             var progData = this.GetProgressData();
             var lprog_pecent = (progData * 100 / progressLevels[0]).toFixed(0);
-            $(".progressDiv").text("Progress: " + lprog_pecent + "%");
+            $(".progressdiv").text("Progress: " + lprog_pecent + "%");
             $(".progressFg").css("width", lprog_pecent + "%");
 
 
@@ -382,7 +385,7 @@ var _Navigator = (function () {
         },
         UpdateScore: function () {
             var percScore = this.GetTotalScore()
-            //$("#scorediv").html("Score: " + percScore + "%");
+            $("#scorediv").html("Score: " + percScore + "%");
         },
         SetPageScore: function (points) {
             if (!_currentPageObject.isAnswered) {
@@ -421,7 +424,7 @@ var _Navigator = (function () {
             return submitCounter;
         },
         SetPresenterMode: function (val) {
-            packageType = val;
+            presentermode = val;
         },
         IsPresenterMode: function () {
             if (packageType == "presenter") {
@@ -437,7 +440,7 @@ var _Navigator = (function () {
             var bookmarkobj = {}
             bookmarkobj.BMPageId = bookmarkpageid;
             bookmarkobj.VisistedPages = this.GetNavigatorBMData();
-            //bookmarkobj.ProgressLevels = progressLevels;
+            bookmarkobj.ProgressLevels = progressLevels;
             bookmarkobj.ReviewData = _ModuleCommon.GetReviewData();
             bookmarkobj.AssessmentData = _Assessment.Getbookmarkdata();
             if (this.IsRevel()) {
@@ -566,6 +569,9 @@ var _Navigator = (function () {
         GetPackageType: function () {
             return packageType;
         },
+        GetQuizPageId:function(){
+            return quizpageid;
+        }
     };
 })();
 
