@@ -248,8 +248,17 @@
         left: -22px;
     }
     
+
 /*assessment css */
-    .inputcircle:after {
+
+.questioninnerwrapper .inputcircle , #Summary .inputcircle {
+    position: relative;
+    padding-left: 6px;
+    cursor: pointer;
+    color: gray;
+    left: -22px;
+}
+.inputcircle:after {
         content: '';
         width: 23px;
         height: 23px;
@@ -265,9 +274,9 @@
         -ms-box-sizing: border-box;
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
-    }
+}
     
-    .assessmentradio:checked + .inputcircle:before {
+    .assessmentradio:checked + .inpputtext .inputcircle:before {
         content: '';   
         height: 15px;
         width: 15px;
@@ -279,35 +288,35 @@
         -ms-border-radius: 100%;
         -moz-border-radius: 100%;
         -webkit-border-radius: 100%;
-    }
+}
     
-    .assessmentradio:checked + .inputcircle {
+    .assessmentradio:checked + .inpputtext .inputcircle, #Summary .assessmentradio:checked + .inpputtext .inputcircle {
         color: #047a9c;
     }
     
-    #questioninnerwrapper .inputcircle , #Summary.inputcircle {
-        position: relative;
-        padding-left: 6px;
-        cursor: pointer;
-        color: gray;
-        left: -22px;
-    }
-    .assessmentradio {
+ #questioninnerwrapper.inputcircle , #Summary.inputcircle {
+    position: relative;
+    padding-left: 6px;
+    cursor: pointer;
+    color: gray;
+    left: -22px;
+}
+.assessmentradio {
         opacity: 0;
-    }
+}
     
-    .assessmentradio{
+.assessmentradio{
     position: absolute;
-        margin-left: -10px;
-        cursor: pointer;
-    }
-    .questionfdk{
-        display: none;
-    }
-    .iscorrect{
-        position: absolute;
-        left: -43px;
-    }
+    margin-left: -10px;
+    cursor: pointer;
+}
+.questionfdk{
+    display: none;
+}
+.iscorrect{
+   position: absolute;
+    left: -43px;
+}
     .summaryquestion{
         margin-bottom: 20px;
         float: left;
@@ -334,8 +343,7 @@
         border-radius: 5px;
     }
     #Questioninfo{
-        font-weight: bold;
-       
+        font-weight: bold;       
     }
     #summaryheading{
         border-top: 1px solid #cdcdcd;
@@ -364,10 +372,15 @@
     .question-band{
         float: left;
         margin-left: 8%;
+    position: relative;
     }
    .quetiontext{
        margin-left: 20px;
    }
+   .inpputtext{
+    display: block;
+    margin: 5px 0;
+}
    .chkbox{
        margin-left: -18px;
    }
@@ -380,4 +393,44 @@
 
 .chkbox , .chklbl {
     cursor: pointer;
+}
+
+.presentationModeFooter {
+    display: inline-block;
+    background-color: #1a76cb;
+    height: 29px;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+.option_div img{
+    width: 100px;
+    height: 67px;
+}
+.accessibility{
+    font-size: 0px;
+    opacity: 0;
+}
+.questioninnerwrapper legend{
+    width: 100%;
+}
+.summaryquestion legend{
+    width: 100%;
+}
+
+input[type="checkbox"].disabled{
+    opacity: 0;
+}
+.chklbl {
+    width: 100%;
+    display: block;
+}
+.chkbox{
+    float: left;
+    margin-top: 7px;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .iscorrect{
+        margin-top: 5px;
+    }
 }

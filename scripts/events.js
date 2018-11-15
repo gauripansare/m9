@@ -26,6 +26,7 @@ $(document).on("click", ".qheight", function (event) {
 
 });
 $(document).on("click", ".submitdata", function (event) {
+    if ($(this).k_IsDisabled()) return;
     _ModuleCommon.checkboxcheckAns();
 });
 $(document).on("change", ".chkbox", function (event) {
@@ -39,6 +40,7 @@ $(document).on("change", ".chkbox", function (event) {
 });
 
 $(document).on('click', "#continuebtn", function (event) {
+
     _ModuleCommon.OnContinue();
 });
 var hotspotclicked = false;;
@@ -75,21 +77,43 @@ $(document).on("dblclick", ".divHotSpotdbl", function (event) {
        
     },400)
     
-});*/
-var count = "0";
-$(document).on("click", ".divHotSpotdbl", function (event) {
-    debugger;
+});*/$(document).on("dblclick", ".divHotSpotdbl", function (event) {
     if (_Navigator.IsPresenterMode()) {
         return;
     }
     if ($(this).attr("disabled") || $(this).hasClass("disabled")) {
         event.preventDefault();
         return;
-    }
-    else {
+    } else {
         event.preventDefault();
-        count++;
-        if (count == 2) {
+
+        $(this).k_disable()
+        if (hotspotclicked || _Navigator.IsAnswered())
+            return;
+        $(this).addClass("hotspotclicked")
+        hotspot = $(this);
+        setTimeout(function () {
+            hotspotclicked = false;
+            _ModuleCommon.HotspotClick(hotspot, event);
+        }, 400);
+
+    }
+});
+$(document).on("keyup", ".divHotSpotdbl", function (event) {
+    if (_Navigator.IsPresenterMode()) {
+        return;
+    }
+    if ($(this).attr("disabled") || $(this).hasClass("disabled")) {
+        event.preventDefault();
+        return;
+    } else {
+        event.preventDefault();
+        if (window.event) {
+            key = window.event.keyCode;
+        } else if (event) {
+            key = event.keyCode;
+        }
+        if (key == 13) {
             $(this).k_disable()
             if (hotspotclicked || _Navigator.IsAnswered())
                 return;
@@ -99,8 +123,8 @@ $(document).on("click", ".divHotSpotdbl", function (event) {
                 hotspotclicked = false;
                 _ModuleCommon.HotspotClick(hotspot, event);
             }, 400);
-            count = 0;
         }
+
     }
 });
 $(document).on("click", "#linkprevious", function (event) {
@@ -118,6 +142,7 @@ $(document).on("click", ".btnretry", function (event) {
 
 
 $(document).on("click", ".hintlink", function (event) {
+    if ($(this).k_IsDisabled()) return;
     var open = "open;"
     if ($(this).hasClass("expanded")) {
         $(".hintlink").removeClass("expanded")
@@ -179,9 +204,11 @@ $(document).on('click', ".activityimg", function (event) {
 
 
 $(document).on('click', ".startbtn", function (event) {
+    if ($(this).k_IsDisabled()) return;
     _Navigator.Next();
 });
 $(document).on('click', ".reviewsubmit", function (event) {
+    if ($(this).k_IsDisabled()) return;
     _Navigator.Next();
 });
 $(document).on('touchstart', ".hintlink", function (event) {
@@ -190,7 +217,9 @@ $(document).on('touchstart', ".hintlink", function (event) {
 });
 var touchend = false;
 $(document).on('touchend ', ".hintlink", function (event) {
-    mouseleave();
+    setTimeout(function(){
+        mouseleave();
+    },50);
     touchend = true;
 });
 
@@ -227,7 +256,7 @@ $(document).on("click", ".assessmentSubmit", function (event) {
     _Navigator.Next();
 });
 $(document).on('click', ".inputcircle", function (event) {
-
+    if ($(this).k_IsDisabled()) return;
     $(this).closest("div").find(".inpputtext").trigger("click");
 });
 

@@ -30,16 +30,10 @@ var isIpad = userAgentCustom.match(/iPad/i)
 var isIphone = (navigator.userAgent.match(/iPhone/i))
 var isIEEdge = /Edge/.test(navigator.userAgent)
 var Firefox = /Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)
-var deleteIdList = ["row2", "row3", "row4", "row7", "row9", "row11", "row12"];
-var readIdList = ["row1", "row5", "row6", "row8", "row10"];
-var checkMail1, checkMail2, checkMail3, checkMail4, checkMail5, checkMail6, checkMail7, obj, k_box, gpName, gpScore, g_ReadRowId, g_delRowId;
-var allRead = false;
-var allRead1 = false;
-var tempRowID = "";
 
 var animeTime = 1000;
 if(isIphone != null){
-    animeTime = 2500;
+    animeTime = 3000;
 }
 
 var _PData = {
@@ -75,7 +69,7 @@ var _PData = {
                   HotspotId: 1,
                   width: "3.015075376884422%",
                   height: "4.690117252931323%",
-                  top: "94%",
+                  top: "93%",
                   left: "85.11306532663316%",
                   widthPX: "24px",
                   heightPX: "28px",
