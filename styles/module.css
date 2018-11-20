@@ -428,4 +428,7 @@ input[type="checkbox"].disabled{
     .iscorrect{
         margin-top: 5px;
     }
+    .hintlink{
+        left: 66%;
+    }
 }

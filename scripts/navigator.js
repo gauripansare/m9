@@ -104,6 +104,7 @@ var _Navigator = (function () {
     var _StateData = {}
 
     function OnPageLoad() {
+        $("h2.pageheading").attr("tabindex", "-1");
         $(".hintcontainer").hide()
         $(".header-content-dock").css({"visibility":"hidden"});
         $(".hintcontainer").hide()
