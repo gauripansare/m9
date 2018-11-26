@@ -221,6 +221,7 @@ var _Navigator = (function () {
                                         $("#progressdiv").focus();
                                     }
                                 }
+                                _NData[_currentPageId].isLoaded = true;
 
                             });
                         }
@@ -252,7 +253,6 @@ var _Navigator = (function () {
                             $('#footer-navigation').css('display', 'table');
                         }
 
-                        _NData[_currentPageId].isLoaded = true;
                         _Navigator.GetBookmarkData();
                     });
                 })

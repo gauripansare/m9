@@ -167,7 +167,7 @@ var _ModuleCommon = (function () {
                         if (pageDetailData.EmbedSettings.validatearray.indexOf(tEntry) >= 0) {
                             if (reviewData.isCorrect && i == 0) {
                                 $(".textentryreview1").html("<div class='OpenSansFont greenspan' style='font-weight:bold;font-size: 13px; ' ><span aria-hidden='true'>" + reviewData.textEntry[i] + "</span></div>")
-                                $(".textentryaccessibility").text("Correct password" + reviewData.textEntry[i]);
+                                $(".textentryaccessibility").text("Correct password " + reviewData.textEntry[i]);
                             }
                             else {
                                 $(".textentryreview2").html("<div class='OpenSansFont greenspan'  style='font-weight:bold;font-size: 13px;padding-left:5px; ' ><span aria-hidden='true'>" + reviewData.textEntry[i] + "</span></div>");
