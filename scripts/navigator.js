@@ -446,6 +446,24 @@ var _Navigator = (function () {
                 return false;
             }
         },
+        SetBookmarkData: function () {
+            var bookmarkdata;
+            if (this.IsScorm()) {
+                bookmarkdata = _ScormUtility.GetSuspendData();
+            }
+            else if (this.IsRevel()) {
+                bookmarkdata = JSON.stringify(k_Revel.get_StateData())
+            }
+
+            if (bookmarkdata != undefined && bookmarkdata != "") {
+                bookmarkdata = JSON.parse(bookmarkdata);
+                bookmarkpageid = bookmarkdata.BMPageId;
+                this.SetNavigatorBMData(bookmarkdata.VisistedPages)
+                progressLevels = bookmarkdata.ProgressLevels;
+                _ModuleCommon.SetReviewData(bookmarkdata.ReviewData)
+                _Assessment.Setbookmarkdata(bookmarkdata.AssessmentData)
+            }
+        },
         GetBookmarkData: function () {
             if (!this.IsScorm() && !this.IsRevel())
                 return;
@@ -493,25 +511,7 @@ var _Navigator = (function () {
                 this.GetBookmarkData();
             }
         },
-        SetBookmarkData: function () {
-
-            var bookmarkdata;
-            if (this.IsScorm()) {
-                bookmarkdata = _ScormUtility.GetSuspendData();
-            }
-            else if (this.IsRevel()) {
-                bookmarkdata = JSON.stringify(k_Revel.get_StateData())
-            }
-
-            if (bookmarkdata != undefined && bookmarkdata != "") {
-                bookmarkdata = JSON.parse(bookmarkdata);
-                bookmarkpageid = bookmarkdata.BMPageId;
-                this.SetNavigatorBMData(bookmarkdata.VisistedPages)
-                //progressLevels = bookmarkdata.ProgressLevels;
-                _ModuleCommon.SetReviewData(bookmarkdata.ReviewData)
-                _Assessment.Setbookmarkdata(bookmarkdata.AssessmentData)
-            }
-        },
+        
         GetBookMarkPage: function () {
             return bookmarkpageid;
         },
