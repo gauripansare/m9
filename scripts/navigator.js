@@ -2,12 +2,14 @@
 //It will also handle the question navigation if the page is having multiple questions.
 var _Navigator = (function () {
     var packageType = "";//presenter/scorm/revel
+    var isReviewMode = false;
     var _currentPageId = "";
     var _currentPageObject = {};
     var progressLevels = [14];
     var totalsimscore = 18;
     //var presentermode = false;
     var bookmarkpageid = "";
+    var retrycnt = 1;
     var quizpageid = "p10";
     var _NData = {
         "p1": {
@@ -121,6 +123,10 @@ var _Navigator = (function () {
         if (_Navigator.IsPresenterMode()) {
             _ModuleCommon.AppendFooter();
         }
+        if (_Navigator.IsReviewMode()) {
+            $("#linknext").k_enable();
+            $(".start-btn").k_disable();
+        }
         submitCounter = 0;
         if ((/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent))) {
             $('#footer-navigation').css('display', 'table');
@@ -141,9 +147,15 @@ var _Navigator = (function () {
             if (this.IsPresenterMode()) {
                 _ModuleCommon.AppendFooter();
             }
+            
+            if(this.IsReviewMode()){
+                _ModuleCommon.AppendScormReviewFooter();
+                _Assessment.SetCurrentQuestionIndex(0);
+            }
         },
         LoadPage: function (pageId, jsonObj) {
-
+            $(".hintcontainer").hide();
+            bookmarkpageid = pageId;
             if (jsonObj == undefined) {
                 jsonObj = {};
             }
@@ -166,6 +178,10 @@ var _Navigator = (function () {
                 $("#linknext").k_enable();
                 $("footer").hide();
                 $("#header-progress").hide();
+                if(this.IsReviewMode()){
+                    _ModuleCommon.AppendScormReviewFooter();
+                    _Assessment.SetCurrentQuestionIndex(0)
+                }
                 if (this.IsPresenterMode())
                     _ModuleCommon.AppendFooter();
 
@@ -405,6 +421,12 @@ var _Navigator = (function () {
                 this.UpdateScore();
             }
         },
+        IsReviewMode: function(){
+            return isReviewMode;
+        },
+        SetIsReviewMode: function(isReviewModeStatus){
+            isReviewMode = isReviewModeStatus;
+        },
         SetPageStatus: function (isAnswered) {
             if (isAnswered) {
                 _NData[_currentPageObject.pageId].isAnswered = true;
@@ -436,7 +458,7 @@ var _Navigator = (function () {
             return submitCounter;
         },
         SetPresenterMode: function (val) {
-            presentermode = val;
+            packageType = val;
         },
         IsPresenterMode: function () {
             if (packageType == "presenter") {
@@ -446,29 +468,13 @@ var _Navigator = (function () {
                 return false;
             }
         },
-        SetBookmarkData: function () {
-            var bookmarkdata;
-            if (this.IsScorm()) {
-                bookmarkdata = _ScormUtility.GetSuspendData();
-            }
-            else if (this.IsRevel()) {
-                bookmarkdata = JSON.stringify(k_Revel.get_StateData())
-            }
-
-            if (bookmarkdata != undefined && bookmarkdata != "") {
-                bookmarkdata = JSON.parse(bookmarkdata);
-                bookmarkpageid = bookmarkdata.BMPageId;
-                this.SetNavigatorBMData(bookmarkdata.VisistedPages)
-                progressLevels = bookmarkdata.ProgressLevels;
-                _ModuleCommon.SetReviewData(bookmarkdata.ReviewData)
-                _Assessment.Setbookmarkdata(bookmarkdata.AssessmentData)
-            }
-        },
         GetBookmarkData: function () {
             if (!this.IsScorm() && !this.IsRevel())
                 return;
             var bookmarkobj = {}
             bookmarkobj.BMPageId = bookmarkpageid;
+            bookmarkobj.BMretrycnt = retrycnt;
+            bookmarkobj.BMg_RuntimeData = _ModuleCommon.Getg_RuntimeData();
             bookmarkobj.VisistedPages = this.GetNavigatorBMData();
             bookmarkobj.ProgressLevels = progressLevels;
             bookmarkobj.ReviewData = _ModuleCommon.GetReviewData();
@@ -511,9 +517,35 @@ var _Navigator = (function () {
                 this.GetBookmarkData();
             }
         },
-        
+        SetBookmarkData: function () {
+
+            var bookmarkdata;
+            if (this.IsScorm()) {
+                bookmarkdata = _ScormUtility.GetSuspendData();
+            }
+            else if (this.IsRevel()) {
+                bookmarkdata = JSON.stringify(k_Revel.get_StateData())
+            }
+
+            if (bookmarkdata != undefined && bookmarkdata != "") {
+                bookmarkdata = JSON.parse(bookmarkdata);
+                bookmarkpageid = bookmarkdata.BMPageId;
+                retrycnt = bookmarkdata.BMretrycnt;
+                _ModuleCommon.Setg_RuntimeData(bookmarkdata.BMg_RuntimeData);
+                this.SetNavigatorBMData(bookmarkdata.VisistedPages)
+                progressLevels = bookmarkdata.ProgressLevels;
+                _ModuleCommon.SetReviewData(bookmarkdata.ReviewData)
+                _Assessment.Setbookmarkdata(bookmarkdata.AssessmentData)
+            }
+        },
         GetBookMarkPage: function () {
             return bookmarkpageid;
+        },
+        GetBookMarkRetrycnt: function(){
+            return retrycnt;
+        },
+        SetBookMarkRetrycnt: function(){
+            retrycnt = retrycnt + 1;
         },
         Initialize: function () {
 
@@ -521,6 +553,9 @@ var _Navigator = (function () {
                 _ScormUtility.Init();
                 _Navigator.SetBookmarkData();
                 //bookmarkpageid = _ScormUtility.GetBookMark();
+                if(_ScormUtility.IsScormReviewMode()){
+                    _Navigator.SetIsReviewMode(true);
+                }
                 this.GotoBookmarkPage();
             }
             else if (packageType == "revel") {

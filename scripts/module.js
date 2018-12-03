@@ -238,6 +238,7 @@ var _ModuleCommon = (function () {
         },
         AddHotspotClick: function (hotspotObj, event, isCorrect) {
             //$(".divHotSpot").remove();
+            debugger;
             if (_Navigator.IsAnswered()) {
                 return;
             }
@@ -252,7 +253,7 @@ var _ModuleCommon = (function () {
                 rposX = (event.pageX - posX);
                 rposY = (event.pageY - posY);
             }
-            if (rposX < 0 || rposY < 0) {//gp if module is attmpted using accessibility
+            if (rposX < 0 || rposY < 0 || rposX == undefined || rposY == undefined) {//gp if module is attmpted using accessibility
                 rposX = hotspotObj.position().left + 20;
                 rposY = hotspotObj.position().top + 20;
             }
@@ -887,6 +888,14 @@ var _ModuleCommon = (function () {
                 $("#linknext").k_enable();
             }
             else {
+                $("footer").show();
+                $("#linknext").k_enable();
+            }
+        },
+        AppendScormReviewFooter: function () {
+            if ($(".ScormReviewFooter").length == 0) {
+                var str = '<div class="ScormReviewFooter"> Review Mode</div>';
+                $("footer").append($(str));
                 $("footer").show();
                 $("#linknext").k_enable();
             }
