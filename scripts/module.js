@@ -54,7 +54,7 @@ var _ModuleCommon = (function () {
             return pageData;
         },
         ShowFeedbackReviewMode: function () {
-            debugger;
+            
             var pageData = this.GetPageDetailData();
             var reviewData = this.GetPageReviewData();
             var fdkurl = "";
@@ -82,6 +82,7 @@ var _ModuleCommon = (function () {
             }
         },
         DisplayInstructorReviewMode: function () {
+            
             $(".reviewDiv").remove();
             var pageDetailData = this.GetPageDetailData();
             var currentPageData = _Navigator.GetCurrentPage();
@@ -119,7 +120,9 @@ var _ModuleCommon = (function () {
                 }
 
             }
-            this.ShowFeedbackReviewMode();
+            if (!_Navigator.IsPresenterMode()) {
+                this.ShowFeedbackReviewMode();
+            }
             $(".divHotSpot").k_disable();
             $(".divHotSpotdbl").k_disable();
 
@@ -133,7 +136,14 @@ var _ModuleCommon = (function () {
             var checklist = $("#EmbededChecklist");
             //var reviewData = ITSimModule.GetReviewDataForPage();
             $("input").k_disable();
-
+            if (_Navigator.IsPresenterMode()) {
+                for (var i = 0; i < pageDetailData.EmbedSettings.validatearray.length; i++) {
+                    var chkId = pageDetailData.EmbedSettings.validatearray[i];
+                    $("input#" + chkId).prop('checked', true);
+                }
+                this.ShowCorrectIncorrectCheckItems("#EmbededChecklist");
+                $('#EmbededChecklist input').attr('disabled', 'disabled');
+            }
             if (reviewData != undefined) {
                 var k_box = checklist.closest(".k-element-box");
 
@@ -159,8 +169,14 @@ var _ModuleCommon = (function () {
             $(".EmbededElement").hide();
             var reviewData = this.GetPageReviewData();
             var pageDetailData = this.GetPageDetailData();
+            if (_Navigator.IsPresenterMode()) {
+                if (pageDetailData.EmbedSettings.validatearray.length > 0) {
+                    $(".textentryreview1").html("<div class='OpenSansFont greenspan' style='font-weight:bold;font-size: 13px; ' ><span aria-hidden='true'>" + pageDetailData.EmbedSettings.validatearray[0] + "</span></div>")
+                    $(".textentryaccessibility").text("Correct password " + pageDetailData.EmbedSettings.validatearray[0]);
+                    $(".textentryreview1").show();
+                }
+            }
             if (reviewData != undefined && reviewData.textEntry != undefined && reviewData.textEntry.length > 0) {
-
                 for (i = 0; i < reviewData.textEntry.length; i++) {
                     if (reviewData.textEntry[i] != undefined && reviewData.textEntry[i] != "") {
                         var tEntry = reviewData.textEntry[i].trim();
@@ -238,7 +254,7 @@ var _ModuleCommon = (function () {
         },
         AddHotspotClick: function (hotspotObj, event, isCorrect) {
             //$(".divHotSpot").remove();
-            debugger;
+            
             if (_Navigator.IsAnswered()) {
                 return;
             }
@@ -367,6 +383,7 @@ var _ModuleCommon = (function () {
 
         },
         OnPageLoad: function () {
+            
             var currentPageData = _Navigator.GetCurrentPage();
             this.LoadHotSpot();
             this.ApplycontainerWidth();
