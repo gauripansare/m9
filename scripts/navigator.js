@@ -213,6 +213,12 @@ var _Navigator = (function () {
                     OnPageLoad();
                     //setReader("header1");
                     $("#header1").focus();
+                    if (_Navigator.IsPresenterMode()) {
+                        $(".wrapper-img").prepend('<div class="presentationModeFooter" >Presentation Mode</div>')
+                        $("footer").show();
+                        $("#linknext").k_enable();
+                    }
+                  
                 });
             } else {
                 $(".main-content").fadeTo(250, 0.25, function () {
