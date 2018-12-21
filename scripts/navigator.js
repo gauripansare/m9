@@ -11,8 +11,7 @@ var _Navigator = (function () {
     var bookmarkpageid = "";
     var retrycnt = 1;
     var quizpageid = "p10";
-    var Summarybookmark = false
-        ;
+    var Summarybookmark = false;
     var _NData = {
         "p1": {
             pageId: "p1",
