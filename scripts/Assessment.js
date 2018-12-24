@@ -39,7 +39,7 @@ var _Assessment = (function () {
 
 
 		},
-		SetCurrentQuestionIndex: function(questionIndex){
+		SetCurrentQuestionIndex: function (questionIndex) {
 			currentQuestionIndex = questionIndex;
 		},
 		Shuffle: function (array) {
@@ -116,8 +116,18 @@ var _Assessment = (function () {
 				this.ShowQuestionPresenterMode();
 				$("#linknext").k_enable()
 			}
-			if (gRecordData.Status == "Completed") {
+			if (gRecordData.Status == "Completed" || gRecordData.Questions[currentQuestionIndex].IsAnswered) {
 				this.ShowUserReviewMode();
+			}
+			/*
+			if (gRecordData.Questions[currentQuestionIndex].IsAnswered) {
+				this.ShowUserReviewMode();
+			}*/
+			if (_Navigator.IsReviewMode()) {
+				$("input[type='radio']").prop("readonly", "readonly");
+				$("input[type='radio']").k_disable();
+				$("#linkprevious").k_enable()
+				$("#linknext").k_enable()
 			}
 			_Navigator.UpdateProgressBar();
 			$(".assessmentSubmit").k_disable();
@@ -208,42 +218,44 @@ var _Assessment = (function () {
 					optionObj.find("input").attr("name", radioname)
 					optionObj.show();
 					//questionObj.find(".question-band").append(optionObj)
-					if (isIE11version || isIEEdge || isSafari) {
-						optionObj.find("input").attr("aria-label", optionObj.find(".inpputtext").text());
-						optionObj.find(".inpputtext").attr("aria-hidden", "true")
-					}
-					var iscorrectimg = optionObj.find(".iscorrect").find("img")
+					if (gRecordData.Questions[b].IsAnswered) { //ATUL 
+						if (isIE11version || isIEEdge || isSafari) {
+							optionObj.find("input").attr("aria-label", optionObj.find(".inpputtext").text());
+							optionObj.find(".inpputtext").attr("aria-hidden", "true")
+						}
+						var iscorrectimg = optionObj.find(".iscorrect").find("img")
 
-					if (currQustion.Options[i].IsCorrect) {
-						iscorrectimg.attr("src", "assets/images/tick-icon-correct-1.png")
-						iscorrectimg.closest("span").show();
-						//iscorrectimg.attr("aria-label", "Correct option");
-						if (_Navigator.IsPresenterMode()) {
+						if (currQustion.Options[i].IsCorrect) {
+							iscorrectimg.attr("src", "assets/images/tick-icon-correct-1.png")
+							iscorrectimg.closest("span").show();
+							//iscorrectimg.attr("aria-label", "Correct option");
+							if (_Navigator.IsPresenterMode()) {
+								optionObj.find("input").prop("checked", "true");
+							}
+							optionObj.find("input").attr("aria-label", "Correct option " + optionObj.find(".inpputtext").text())
+							optionObj.find(".inpputtext").attr("aria-hidden", "true");
+						}
+						if (currQustion.UserSelectedOptionId == currQustion.Options[i].OptionId) {
+
+							if (!currQustion.Options[i].IsCorrect) {
+								iscorrectimg.attr("src", "assets/images/incorrect-v1-1.png")
+								//iscorrectimg.attr("aria-label", "Incorrect option selected");
+								feedbacktext = currQustion.IncorrectFeedback;
+								optionObj.find("input").attr("aria-label", "Incorrect option selected " + optionObj.find(".inpputtext").text())
+							}
+							else {
+								//iscorrectimg.attr("aria-label", "Correct option selected");
+								optionObj.find("input").attr("aria-label", "Correct option selected " + optionObj.find(".inpputtext").text())
+								score++;
+								feedbacktext = currQustion.CorrectFeedback;
+							}
 							optionObj.find("input").prop("checked", "true");
-						}
-						optionObj.find("input").attr("aria-label", "Correct option " + optionObj.find(".inpputtext").text())
-						optionObj.find(".inpputtext").attr("aria-hidden", "true");
-					}
-					if (currQustion.UserSelectedOptionId == currQustion.Options[i].OptionId) {
+							iscorrectimg.closest("span").show();
+							optionObj.find(".inpputtext").attr("aria-hidden", "true");
 
-						if (!currQustion.Options[i].IsCorrect) {
-							iscorrectimg.attr("src", "assets/images/incorrect-v1-1.png")
-							//iscorrectimg.attr("aria-label", "Incorrect option selected");
-							feedbacktext = currQustion.IncorrectFeedback;
-							optionObj.find("input").attr("aria-label", "Incorrect option selected " + optionObj.find(".inpputtext").text())
 						}
-						else {
-							//iscorrectimg.attr("aria-label", "Correct option selected");
-							optionObj.find("input").attr("aria-label", "Correct option selected " + optionObj.find(".inpputtext").text())
-							score++;
-							feedbacktext = currQustion.CorrectFeedback;
-						}
-						optionObj.find("input").prop("checked", "true");
-						iscorrectimg.closest("span").show();
-						optionObj.find(".inpputtext").attr("aria-hidden", "true");
-
+						iscorrectimg.attr({ "alt": "", "aria-hidden": "true" });
 					}
-					iscorrectimg.attr({ "alt": "", "aria-hidden": "true" });
 					questionObj.find(".question-band").append(optionObj)
 
 				}
@@ -277,7 +289,7 @@ var _Assessment = (function () {
 			}
 			var perscore = gRecordData.Score / parseInt(gRecordData.AssessmentScore) * 100;
 			$("#ScoreSummary").text("Score: " + perscore + "%");
-			if (gRecordData.Status == "Started") {
+			if (gRecordData.Status == "Started" && !_Navigator.IsReviewMode()) {
 				gRecordData.Status = "Completed";
 				gRecordData.Score = score;
 
@@ -343,6 +355,9 @@ var _Assessment = (function () {
 			currentQuestionIndex = assessmentobj.currentQuestionIndex;
 			gRecordData.Status = assessmentobj.status;
 			gRecordData.Score = assessmentobj.score;
+			if (assessmentobj.Qdata.length == gRecordData.Questions.length) {
+				gRecordData.Status = "Completed";
+			}
 			if (assessmentobj.Qdata != undefined && assessmentobj.Qdata.length > 0) {
 				for (var i = 0; i < gRecordData.Questions.length; i++) {
 					for (j = 0; j < assessmentobj.Qdata.length; j++) {

@@ -125,6 +125,12 @@ var _Navigator = (function () {
             _ModuleCommon.AppendFooter();
         }
         if (_Navigator.IsReviewMode()) {
+            //$("input[type='radio']").k_disable();
+            $("input[type='checkbox']").k_disable()
+            $(".divHotSpotCommon").k_disable();
+            $("input[type='input']").k_disable();
+            $("input[type='password']").k_disable();
+            $("#submitbtn").k_disable();//only for m9 ATUL
             $("#linknext").k_enable();
             $(".start-btn").k_disable();
         }
@@ -371,7 +377,7 @@ var _Navigator = (function () {
                     currentQuestionIndex = currentQuestionIndex + 1
                     $("#Questioninfo").show();
                     _Assessment.ShowQuestion()
-                    if (gRecordData.Status != "Completed" && !this.IsPresenterMode()) {
+                    if (gRecordData.Status != "Completed" && !this.IsPresenterMode() && !this.IsReviewMode) {
                         $("#linknext").k_disable();
                         $("#linkprevious").k_disable();
                     }
