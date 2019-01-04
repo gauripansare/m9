@@ -28,9 +28,6 @@ $(document).on('click', "#continuebtn", function (event) {
 });
 
 $(document).on("click", ".divHotSpot", function (event) {
-    if (_Navigator.IsPresenterMode()) {
-        return;
-    }
     event.preventDefault();
     $(this).k_disable()
     if (hotspotclicked || _Navigator.IsAnswered())
@@ -61,9 +58,6 @@ $(document).on("dblclick", ".divHotSpotdbl", function (event) {
     },400)
     
 });*/$(document).on("dblclick", ".divHotSpotdbl", function (event) {
-    if (_Navigator.IsPresenterMode()) {
-        return;
-    }
     if ($(this).attr("disabled") || $(this).hasClass("disabled")) {
         event.preventDefault();
         return;

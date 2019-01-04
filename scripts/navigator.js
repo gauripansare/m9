@@ -1,7 +1,7 @@
 ﻿//This api will contain navigation logic and page load.
 //It will also handle the question navigation if the page is having multiple questions.
 var _Navigator = (function () {
-    var packageType = "scorm";//presenter/scorm/revel
+    var packageType = "presenter";//presenter/scorm/revel
     var isReviewMode = false;
     var _currentPageId = "";
     var _currentPageObject = {};
@@ -125,6 +125,7 @@ var _Navigator = (function () {
             _ModuleCommon.AppendFooter();
         }
         if (_Navigator.IsReviewMode()) {
+            currentQuestionIndex = 0;
             //$("input[type='radio']").k_disable();
             $("input[type='checkbox']").k_disable()
             $(".divHotSpotCommon").k_disable();
@@ -377,7 +378,7 @@ var _Navigator = (function () {
                     currentQuestionIndex = currentQuestionIndex + 1
                     $("#Questioninfo").show();
                     _Assessment.ShowQuestion()
-                    if (gRecordData.Status != "Completed" && !this.IsPresenterMode() && !this.IsReviewMode) {
+                    if (gRecordData.Status != "Completed" && !this.IsPresenterMode() && !this.IsReviewMode()) {
                         $("#linknext").k_disable();
                         $("#linkprevious").k_disable();
                     }
