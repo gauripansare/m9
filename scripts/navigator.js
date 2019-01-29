@@ -1,7 +1,7 @@
 ﻿//This api will contain navigation logic and page load.
 //It will also handle the question navigation if the page is having multiple questions.
 var _Navigator = (function () {
-    var packageType = "presenter";//presenter/scorm/revel
+    var packageType = "";//presenter/scorm/revel
     var isReviewMode = false;
     var _currentPageId = "";
     var _currentPageObject = {};
@@ -133,7 +133,7 @@ var _Navigator = (function () {
             $("input[type='password']").k_disable();
             $("#submitbtn").k_disable();//only for m9 ATUL
             $("#linknext").k_enable();
-            $(".start-btn").k_disable();
+            $(".startbtn").link_k_disable();
         }
         if (_Navigator.IsPresenterMode() || _Navigator.IsReviewMode()) {
             if (isIphone || isAndroid) {
@@ -298,7 +298,7 @@ var _Navigator = (function () {
                             }
                             else {
                                 _Assessment.ShowQuestion();
-                                $("h2.pageheading").attr("tabindex", "0");
+                                $("h2.pageheading").attr("tabindex", "-1");
                                 $("h2").focus();
                             }
                         }

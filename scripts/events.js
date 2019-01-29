@@ -24,10 +24,12 @@ $(document).on("change", ".chkbox", function (event) {
 });
 
 $(document).on('click', "#continuebtn", function (event) {
+    if ($(this).k_IsDisabled()) return;
     _ModuleCommon.OnContinue();
 });
 
 $(document).on("click", ".divHotSpot", function (event) {
+    if ($(this).k_IsDisabled()) return;
     event.preventDefault();
     $(this).k_disable()
     if (hotspotclicked || _Navigator.IsAnswered())
