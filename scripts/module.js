@@ -152,10 +152,7 @@ var _ModuleCommon = (function () {
                 if (reviewData.selectedOptions != undefined && reviewData.selectedOptions.length > 0) {
                     for (var i = 0; i < reviewData.selectedOptions.length; i++) {
                         var chkId = reviewData.selectedOptions[i];
-
                         $("input#" + chkId).prop('checked', true);
-
-
                     }
 
                     this.ShowCorrectIncorrectCheckItems("#EmbededChecklist");
@@ -390,6 +387,9 @@ var _ModuleCommon = (function () {
             this.LoadHotSpot();
             this.ApplycontainerWidth();
             $("#div_feedback").hide();
+            if ((isFirefox || isIE11version) && currentPageData.pageId == "p9") {
+                this.FFCustomCheckboxAccessbility();
+            }
             if (_Navigator.IsAnswered()) {
                 this.DisplayInstructorReviewMode();
             }
@@ -398,6 +398,7 @@ var _ModuleCommon = (function () {
                 $("#linknext").k_enable();
                 this.PresenterMode();
             }
+            
         },
         PresenterMode: function () {
             /*var currentPageData = _Navigator.GetCurrentPage();
@@ -688,6 +689,9 @@ var _ModuleCommon = (function () {
             // $('html,body').animate({ scrollTop: document.body.scrollHeigh }, 500, function () {
             //     $(".pageheading").focus()
             // });
+            if (isFirefox || isIE11version) {
+                this.FFCustomCheckboxAccessbility();
+            }
             window.scrollTo(0, document.body.scrollHeight)
             $(".pageheading").focus();
         },
@@ -844,12 +848,21 @@ var _ModuleCommon = (function () {
             }
             _Navigator.GetBookmarkData();
         },
+        FFCustomCheckboxAccessbility: function () {            
+            var checkboxarray = $("input[type='checkbox']").map(function () {
+                return $(this).attr("id");
+            }).get();
+            for (var i = 0; i < checkboxarray.length; i++) {
+                var aria_label = $("label[for='" + checkboxarray[i] + "']").text();
+                $("label[for='" + checkboxarray[i] + "'] ").attr("aria-hidden", "true");
+                $("#" + checkboxarray[i]).attr("aria-label", aria_label);
+            }
+        },
         ShowCorrectIncorrectCheckItems: function (checklistid) {
-
             $("input[type='checkbox']:checked").each(function () {
                 var iscorrect = $(this).attr("iscorrect");
                 if (iscorrect == undefined) iscorrect = "Incorrect";
-                var arialabel = $("#" + $(this).attr("id") + "_span").html();
+                var arialabel = $("label[for='" + $(this).attr("id") + "']").text();
                 if (iscorrect == "Correct") {
                     $(this).before("<div class='cchkitem' ></div>");
                     $(this).attr("aria-label", " correct option selected " + arialabel);
